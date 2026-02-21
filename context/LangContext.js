@@ -8,8 +8,17 @@ export const LangProvider = ({ children }) => {
   const [lang, setLang] = useState("en");
 
   useEffect(() => {
-    const savedLang = localStorage.getItem("appLang") || "en";
-    setLang(savedLang);
+    const savedLang = localStorage.getItem("appLang");
+
+    if (savedLang) {
+      setLang(savedLang);
+    } else {
+      const browserLang = navigator.language.split("-")[0];
+      const initialLang = browserLang === "ar" ? "ar" : "en";
+
+      setLang(initialLang);
+      localStorage.setItem("appLang", initialLang);
+    }
   }, []);
 
   const toggleLang = () => {
@@ -20,7 +29,7 @@ export const LangProvider = ({ children }) => {
 
   return (
     <LangContext.Provider value={{ lang, toggleLang }}>
-      {children}
+      <div dir={lang === "ar" ? "rtl" : "ltr"}>{children}</div>
     </LangContext.Provider>
   );
 };

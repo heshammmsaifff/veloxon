@@ -65,9 +65,7 @@ export default function Navbar() {
                 className="relative px-6 py-2 rounded-full text-lg  font-semibold text-gray-400 hover:text-white transition-colors duration-300 group"
               >
                 <span className="relative z-10">{link.name}</span>
-
                 <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 blur-[2px] transition-all duration-300" />
-
                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-brand-orange rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300" />
               </Link>
             ))}
@@ -77,30 +75,28 @@ export default function Navbar() {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={toggleLang}
-              className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-brand-orange hover:border-brand-orange transition-all duration-300"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-brand-orange hover:border-brand-orange transition-all duration-300 group hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]"
             >
-              <Globe className="w-4 h-4" />
+              <Globe className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              <span className="text-xs font-bold uppercase tracking-widest">
+                {lang === "en" ? "AR" : "EN"}
+              </span>
             </button>
 
-            <Link
+            {/* <Link
               href="/contact"
               className="hidden sm:block px-5 py-2.5 bg-white text-brand-charcoal rounded-full text-xs md:text-sm font-bold hover:bg-brand-orange hover:text-white transition-all whitespace-nowrap"
             >
               {lang === "ar" ? "ابدأ مشروعك" : "Start Project"}
-            </Link>
+            </Link> */}
 
             {/* Burger Menu Button - Custom Modern Design */}
             <button
               onClick={() => setIsOpen(true)}
               className="md:hidden group flex flex-col items-end gap-[6px] p-3 rounded-full bg-white hover:bg-brand-orange transition-all duration-300"
             >
-              {/* الخط العلوي: طويل */}
               <span className="w-6 h-[2px] bg-brand-charcoal group-hover:bg-white rounded-full transition-all duration-300" />
-
-              {/* الخط الأوسط: قصير (يعطي لمحة فنية) */}
               <span className="w-4 h-[2px] bg-brand-charcoal group-hover:bg-white rounded-full transition-all duration-300" />
-
-              {/* الخط السفلي: متوسط */}
               <span className="w-5 h-[2px] bg-brand-charcoal group-hover:bg-white rounded-full transition-all duration-300" />
             </button>
           </div>
