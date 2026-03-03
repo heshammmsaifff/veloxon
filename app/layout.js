@@ -2,7 +2,7 @@ import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { LangProvider } from "../context/LangContext";
 import Navbar from "@/components/Navbar"; // استيراد الناف بار الجديد
-// import Footer from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,14 +36,9 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${ibmPlexArabic.variable} font-sans antialiased bg-brand-charcoal text-white`}
       >
         <LangProvider>
-          {/* تم حذف LangSwitcher القديم لأنه أصبح جزءاً من الـ Navbar */}
           <Navbar />
-
-          {/* الـ main هنا لضمان وجود مساحة (Padding) علوية تحت الـ Navbar الثابت */}
           <main className="min-h-screen">{children}</main>
-
-          {/* يمكنك إضافة الفوتر هنا ليكون ثابتاً في كل الموقع */}
-          {/* <Footer /> */}
+          <Footer />
         </LangProvider>
       </body>
     </html>
