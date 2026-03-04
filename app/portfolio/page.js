@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react"; // إضافة useState
 import { useLang } from "@/context/LangContext";
 import { projects } from "@/components/projectsData";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // إضافة AnimatePresence
 import Link from "next/link";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, Sparkles, X, ExternalLink } from "lucide-react"; // إضافة أيقونات المودال
 
 export default function PortfolioPage() {
   const { lang } = useLang();
+  // حالة التحكم في المودال
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -20,12 +23,11 @@ export default function PortfolioPage() {
   };
 
   return (
-    // التعديل: overflow-x-clip هو البديل الأحدث والأفضل لـ overflow-x-hidden لمنع الـ scroll تماماً
     <main
       className="min-h-screen bg-brand-charcoal pt-32 pb-20 overflow-x-clip relative"
       dir={lang === "ar" ? "rtl" : "ltr"}
     >
-      {/* Background Glows - تم تصغيرها لضمان عدم تداخلها مع حدود الشاشة */}
+      {/* Background Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-screen-xl h-96 bg-brand-violet/10 blur-[150px] pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10 box-border">
@@ -77,12 +79,13 @@ export default function PortfolioPage() {
           className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10"
         >
           {projects.map((project) => (
-            <motion.div key={project.id} variants={itemVariants}>
-              <Link
-                href={project.link}
-                target="_blank"
-                className="group relative block h-[350px] md:h-auto md:aspect-[16/10] overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 box-border"
-              >
+            <motion.div
+              key={project.id}
+              variants={itemVariants}
+              onClick={() => setSelectedProject(project)} // فتح المودال عند الضغط
+              className="cursor-pointer"
+            >
+              <div className="group relative block h-[350px] md:h-auto md:aspect-[16/10] overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 box-border">
                 <img
                   src={project.images[0]}
                   alt={project.title[lang]}
@@ -103,11 +106,89 @@ export default function PortfolioPage() {
                     {project.description[lang]}
                   </p>
                 </div>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </motion.div>
       </div>
+
+      {/* --- المودال (Modal) --- */}
+      <AnimatePresence>
+        {selectedProject && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
+            {/* Overlay الخلفية */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProject(null)}
+              className="absolute inset-0 bg-black/95 backdrop-blur-md"
+            />
+
+            {/* Container المودال */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 30 }}
+              className="relative w-full max-w-6xl max-h-[90vh] bg-brand-charcoal border border-white/10 rounded-[3rem] overflow-hidden flex flex-col md:flex-row shadow-2xl z-10"
+            >
+              {/* زر الإغلاق */}
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-6 right-6 z-20 p-3 bg-white/10 hover:bg-brand-orange text-white rounded-full transition-all"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              {/* قسم الصور (Scrollable) */}
+              <div className="w-full md:w-3/5 h-[350px] md:h-auto overflow-y-auto p-6 space-y-6 bg-black/20 custom-scrollbar">
+                {selectedProject.images.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`${selectedProject.title[lang]} ${idx}`}
+                    className="w-full rounded-[2rem] object-cover border border-white/5"
+                  />
+                ))}
+              </div>
+
+              {/* قسم الوصف */}
+              <div className="w-full md:w-2/5 p-8 md:p-14 flex flex-col overflow-y-auto">
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 text-brand-orange mb-4">
+                    <Sparkles className="w-4 h-4" />
+                    <span className="text-xs font-bold uppercase tracking-widest">
+                      Project Insights
+                    </span>
+                  </div>
+                  <h3 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+                    {selectedProject.title[lang]}
+                  </h3>
+                  <div className="h-1 w-20 bg-brand-orange rounded-full mb-8" />
+
+                  {/* الوصف المطول */}
+                  <p className="text-gray-300 text-lg leading-relaxed font-light mb-10">
+                    {selectedProject.longDescription
+                      ? selectedProject.longDescription[lang]
+                      : selectedProject.description[lang]}
+                  </p>
+                </div>
+
+                <div className="mt-auto">
+                  <Link
+                    href={selectedProject.link}
+                    target="_blank"
+                    className="inline-flex items-center gap-4 px-10 py-5 bg-white text-brand-charcoal rounded-2xl font-bold hover:bg-brand-orange hover:text-white transition-all w-full justify-center text-lg"
+                  >
+                    {lang === "ar" ? "استكشف الموقع" : "Explore Project"}
+                    <ExternalLink className="w-5 h-5" />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

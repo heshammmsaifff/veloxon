@@ -102,7 +102,7 @@ export default function Hero() {
               </Link>
 
               <Link
-                href={"/projects"}
+                href={"/portfolio"}
                 className="w-full sm:w-auto border border-white/10 hover:border-brand-violet/50 text-white px-10 py-4 rounded-xl font-bold transition-all bg-white/5 backdrop-blur-md hover:bg-white/10"
               >
                 {lang === "ar" ? "رؤية أعمالنا" : "View Our Work"}
