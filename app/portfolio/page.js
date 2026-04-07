@@ -76,11 +76,11 @@ export default function PortfolioPage() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10"
+          className="grid grid-cols-1 sm:grid-cols-1  md:grid-cols-2 gap-6 lg:gap-10"
         >
-          {projects.map((project) => (
+          {projects.map((project, idx) => (
             <motion.div
-              key={project.id}
+              key={idx}
               variants={itemVariants}
               onClick={() => setSelectedProject(project)} // فتح المودال عند الضغط
               className="cursor-pointer"
@@ -140,14 +140,20 @@ export default function PortfolioPage() {
                 <X className="w-6 h-6" />
               </button>
 
-              {/* قسم الصور (Scrollable) */}
-              <div className="w-full md:w-3/5 h-[350px] md:h-auto overflow-y-auto p-6 space-y-6 bg-black/20 custom-scrollbar">
+              <div
+                className={`w-full md:w-3/5 h-[350px] md:h-auto overflow-y-auto p-6 bg-black/20 custom-scrollbar flex flex-col ${
+                  selectedProject.images.length === 1
+                    ? "justify-center items-center" // تنسيق في حالة صورة واحدة
+                    : "space-y-6 justify-start" // التنسيق الأصلي في حالة عدة صور
+                }`}
+              >
                 {selectedProject.images.map((img, idx) => (
                   <img
                     key={idx}
                     src={img}
                     alt={`${selectedProject.title[lang]} ${idx}`}
-                    className="w-full rounded-[2rem] object-cover border border-white/5"
+                    // أضفنا max-h لضمان عدم خروج الصورة الواحدة عن الـ Container
+                    className="w-full max-h-full rounded-[2rem] object-cover border border-white/5"
                   />
                 ))}
               </div>
@@ -183,6 +189,14 @@ export default function PortfolioPage() {
                     {lang === "ar" ? "استكشف الموقع" : "Explore Project"}
                     <ExternalLink className="w-5 h-5" />
                   </Link>
+                  {/* زر الإغلاق */}
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="absolute top-6 right-6 z-20 md:hidden flex items-center gap-2 px-4 py-2.5 bg-white text-brand-charcoal hover:bg-brand-orange hover:text-white rounded-full font-bold text-sm transition-all shadow-lg"
+                  >
+                    <X className="w-4 h-4" strokeWidth={2.5} />
+                    <span>{lang === "ar" ? "إغلاق" : "Close"}</span>
+                  </button>
                 </div>
               </div>
             </motion.div>

@@ -13,7 +13,7 @@ export default function LatestProjects() {
   const [selectedProject, setSelectedProject] = useState(null);
 
   // جلب آخر 4 مشاريع
-  const latestThree = projects.slice(-4).reverse();
+  const latestThree = projects.slice(0, 4);
 
   return (
     <section
@@ -58,7 +58,7 @@ export default function LatestProjects() {
         </div>
 
         {/* شبكة المشاريع */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {latestThree.map((project, index) => (
             <motion.div
               key={project.id}
@@ -69,21 +69,21 @@ export default function LatestProjects() {
               onClick={() => setSelectedProject(project)} // عند الضغط يفتح المودال
               className="group relative cursor-pointer"
             >
-              <div className="group relative block aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10">
+              <div className="group relative block aspect-[4/3] overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10">
+                {" "}
                 <img
                   src={project.images[0]}
                   alt={project.title[lang]}
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-50 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal via-brand-charcoal/20 to-transparent opacity-80" />
-
                 <div className="absolute bottom-4 left-4 right-4 p-6 bg-white/[0.03] backdrop-blur-md rounded-[2rem] border border-white/10 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 shadow-2xl">
                   <h3 className="text-xl font-bold text-white mb-2 leading-tight">
                     {project.title[lang]}
                   </h3>
-                  {/* <p className="text-gray-300 text-xs line-clamp-2 font-light">
+                  <p className="text-gray-300 text-xs line-clamp-2 font-light">
                     {project.description[lang]}
-                  </p> */}
+                  </p>
                   <div className="mt-4 inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white text-brand-charcoal group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
                     <ArrowUpRight className="w-5 h-5" />
                   </div>
