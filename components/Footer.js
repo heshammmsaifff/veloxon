@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react"; // أضفنا useState
 import { useLang } from "@/context/LangContext";
+import { motion, AnimatePresence } from "framer-motion"; // مكتبة الأنميشن
 import {
   FaXTwitter,
   FaLinkedinIn,
@@ -9,7 +10,7 @@ import {
   FaInstagram,
   FaWhatsapp,
 } from "react-icons/fa6";
-import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
+import { FiPhone, FiMail, FiMapPin, FiX } from "react-icons/fi"; // أضفنا FiX للإغلاق
 import { HiArrowUpRight } from "react-icons/hi2";
 
 const PHONE = "+201500866654";
@@ -19,6 +20,8 @@ const FORMATTED_PHONE = "+201500866654";
 
 const Footer = () => {
   const { lang } = useLang();
+  // State لإدارة المودال
+  const [modalContent, setModalContent] = useState(null);
 
   const content = {
     ar: {
@@ -28,16 +31,27 @@ const Footer = () => {
       nav: {
         company: "الشركة",
         companyLinks: [
-          { label: "الرئيسية", href: "#" },
-          { label: "خدماتنا", href: "#" },
-          { label: "أعمالنا", href: "#" },
-          { label: "من نحن", href: "#" },
+          { label: "الرئيسية", href: "/" },
+          { label: "أعمالنا", href: "/portfolio" },
+          { label: "تواصل معنا", href: "/contact" },
         ],
         support: "الدعم",
         supportLinks: [
-          { label: "مركز المساعدة", href: "#" },
-          { label: "سياسة الخصوصية", href: "#" },
-          { label: "الشروط والأحكام", href: "#" },
+          {
+            label: "مركز المساعدة",
+            title: "مركز المساعدة",
+            body: "نحن هنا لمساعدتك! يمكنك التواصل معنا عبر الواتساب أو البريد الإلكتروني للحصول على دعم فني مباشر لمشروعك.",
+          },
+          {
+            label: "سياسة الخصوصية",
+            title: "سياسة الخصوصية",
+            body: "خصوصيتك تهمنا. نحن في VELOXON نلتزم بحماية بياناتك الشخصية ولا نشاركها مع أي طرف ثالث دون موافقتك الصريحة.",
+          },
+          {
+            label: "الشروط والأحكام",
+            title: "الشروط والأحكام",
+            body: "باستخدامك لخدماتنا، فإنك توافق على الالتزام بمعايير الجودة والاتفاقيات البرمجية الموقعة بين الطرفين لضمان نجاح المشروع.",
+          },
         ],
       },
       contact: {
@@ -45,11 +59,10 @@ const Footer = () => {
         phone: "اتصل بنا",
         whatsapp: "واتساب",
         email: "البريد الإلكتروني",
-        emailVal: "hello@veloxon.dev",
+        emailVal: "heshamsaif856@gmail.com",
         location: "القاهرة، مصر",
       },
       rights: "جميع الحقوق محفوظة",
-      // madeWith: "صُنع بـ",
     },
     en: {
       tagline: "We build the digital future.",
@@ -58,16 +71,27 @@ const Footer = () => {
       nav: {
         company: "Company",
         companyLinks: [
-          { label: "Home", href: "#" },
-          { label: "Services", href: "#" },
-          { label: "Portfolio", href: "#" },
-          { label: "About", href: "#" },
+          { label: "Home", href: "/" },
+          { label: "Portfolio", href: "/portfolio" },
+          { label: "Conact", href: "/contact" },
         ],
         support: "Support",
         supportLinks: [
-          { label: "Help Center", href: "#" },
-          { label: "Privacy Policy", href: "#" },
-          { label: "Terms & Conditions", href: "#" },
+          {
+            label: "Help Center",
+            title: "Help Center",
+            body: "We are here to help! You can reach us via WhatsApp or Email for direct technical support for your project.",
+          },
+          {
+            label: "Privacy Policy",
+            title: "Privacy Policy",
+            body: "Your privacy matters. At VELOXON, we are committed to protecting your personal data and do not share it with third parties.",
+          },
+          {
+            label: "Terms & Conditions",
+            title: "Terms & Conditions",
+            body: "By using our services, you agree to comply with the quality standards and software agreements signed between both parties.",
+          },
         ],
       },
       contact: {
@@ -75,11 +99,10 @@ const Footer = () => {
         phone: "Call Us",
         whatsapp: "WhatsApp",
         email: "Email Us",
-        emailVal: "hello@veloxon.dev",
+        emailVal: "heshamsaif856@gmail.com",
         location: "Cairo, Egypt",
       },
       rights: "All rights reserved",
-      // madeWith: "Made with",
     },
   };
 
@@ -110,56 +133,32 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-14">
           {/* Brand Column */}
           <div className="md:col-span-4">
-            {/* Logo */}
             <div className="flex items-center gap-3 mb-5">
-              {/* <div
-                className="w-9 h-9 rounded-xl shrink-0 shadow-lg shadow-violet-500/30"
-                style={{
-                  background: "linear-gradient(135deg, #7c3aed, #f97316)",
-                }}
-              /> */}
               <span className="text-2xl font-black tracking-tighter uppercase italic select-none">
                 VELOXON
               </span>
             </div>
-
-            {/* Tagline */}
             <p className="text-[var(--color-brand-orange)] font-semibold text-sm mb-3 tracking-wide">
               {t.tagline}
             </p>
-
-            {/* Description */}
             <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-xs">
               {t.description}
             </p>
-
-            {/* Social Row */}
-            <div className="flex items-center gap-3">
-              {/* <SocialIcon
-                Icon={FaXTwitter}
-                href="#"
-                label="X / Twitter"
-                cls="hover:bg-sky-500/20   hover:text-sky-400   hover:border-sky-500/40"
-              /> */}
-              {/* <SocialIcon
-                Icon={FaLinkedinIn}
-                href="#"
-                label="LinkedIn"
-                cls="hover:bg-blue-500/20  hover:text-blue-400  hover:border-blue-500/40"
-              /> */}
+            {/* Social Row سيبقى كما هو */}
+            {/* <div className="flex items-center gap-3">
               <SocialIcon
                 Icon={FaGithub}
                 href="#"
                 label="GitHub"
-                cls="hover:bg-white/10     hover:text-white     hover:border-white/30"
+                cls="hover:bg-white/10 hover:text-white hover:border-white/30"
               />
               <SocialIcon
                 Icon={FaInstagram}
                 href="#"
                 label="Instagram"
-                cls="hover:bg-pink-500/20  hover:text-pink-400  hover:border-pink-500/40"
+                cls="hover:bg-pink-500/20 hover:text-pink-400 hover:border-pink-500/40"
               />
-            </div>
+            </div> */}
           </div>
 
           {/* Nav Columns */}
@@ -168,7 +167,12 @@ const Footer = () => {
           </div>
 
           <div className="md:col-span-2">
-            <FooterNavGroup title={t.nav.support} links={t.nav.supportLinks} />
+            {/* تعديل هنا لإضافة خاصية المودال */}
+            <FooterNavGroup
+              title={t.nav.support}
+              links={t.nav.supportLinks}
+              onOpenModal={(content) => setModalContent(content)}
+            />
           </div>
 
           {/* Contact Column */}
@@ -176,9 +180,7 @@ const Footer = () => {
             <h4 className="text-[var(--color-brand-orange)] font-bold mb-6 uppercase tracking-widest text-xs">
               {t.contact.title}
             </h4>
-
-            <div className="space-y-4">
-              {/* Phone */}
+            <div className="space-y-4" dir="ltr">
               <ContactItem
                 href={PHONE_LINK}
                 Icon={FiPhone}
@@ -186,8 +188,6 @@ const Footer = () => {
                 value={FORMATTED_PHONE}
                 accent="violet"
               />
-
-              {/* WhatsApp — highlighted */}
               <a
                 href={WHATSAPP_LINK}
                 target="_blank"
@@ -210,8 +210,6 @@ const Footer = () => {
                   className="ms-auto text-emerald-500/50 group-hover:text-emerald-400 transition-colors"
                 />
               </a>
-
-              {/* Email */}
               <ContactItem
                 href={`mailto:${t.contact.emailVal}`}
                 Icon={FiMail}
@@ -219,15 +217,11 @@ const Footer = () => {
                 value={t.contact.emailVal}
                 accent="orange"
               />
-
-              {/* Location */}
               <div className="flex items-center gap-3 px-1 pt-1">
                 <span className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-500">
                   <FiMapPin size={15} />
                 </span>
-                <span className="text-gray-500 text-sm">
-                  {t.contact.location}
-                </span>
+                <span className="text-gray-500">{t.contact.location}</span>
               </div>
             </div>
           </div>
@@ -236,7 +230,6 @@ const Footer = () => {
         {/* ── Bottom Bar ── */}
         <div className="relative">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-700/60 to-transparent mb-8" />
-
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-600">
             <p>
               © {new Date().getFullYear()}{" "}
@@ -249,6 +242,53 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      {/* ── Modal Component ── */}
+      <AnimatePresence>
+        {modalContent && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setModalContent(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-lg bg-[#0f0f13] border border-white/10 rounded-[2rem] p-8 shadow-2xl overflow-hidden"
+            >
+              {/* Modal Glow */}
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-violet-600/20 blur-[80px] rounded-full" />
+
+              <div className="relative">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-[var(--color-brand-orange)]">
+                    {modalContent.title}
+                  </h3>
+                  <button
+                    onClick={() => setModalContent(null)}
+                    className="p-2 hover:bg-white/5 rounded-full transition-colors text-gray-400 hover:text-white"
+                  >
+                    <FiX size={20} />
+                  </button>
+                </div>
+                <div className="text-gray-400 leading-relaxed space-y-4">
+                  <p>{modalContent.body}</p>
+                </div>
+                <button
+                  onClick={() => setModalContent(null)}
+                  className="mt-8 w-full py-4 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-violet-600/20"
+                >
+                  {isRtl ? "فهمت ذلك" : "Got it"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </footer>
   );
 };
@@ -265,7 +305,7 @@ const SocialIcon = ({ Icon, href, label, cls }) => (
   </a>
 );
 
-const FooterNavGroup = ({ title, links }) => (
+const FooterNavGroup = ({ title, links, onOpenModal }) => (
   <div>
     <h4 className="text-[var(--color-brand-orange)] font-bold mb-5 uppercase tracking-widest text-xs">
       {title}
@@ -273,13 +313,25 @@ const FooterNavGroup = ({ title, links }) => (
     <ul className="space-y-3">
       {links.map((link, i) => (
         <li key={i}>
-          <a
-            href={link.href}
-            className="group text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"
-          >
-            <span className="w-0 h-px bg-[var(--color-brand-violet-light)] transition-all duration-300 group-hover:w-3" />
-            {link.label}
-          </a>
+          {onOpenModal && link.body ? (
+            <button
+              onClick={() =>
+                onOpenModal({ title: link.title, body: link.body })
+              }
+              className="group text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2 text-start"
+            >
+              <span className="w-0 h-px bg-[var(--color-brand-violet-light)] transition-all duration-300 group-hover:w-3" />
+              {link.label}
+            </button>
+          ) : (
+            <a
+              href={link.href}
+              className="group text-gray-400 text-sm hover:text-white transition-colors flex items-center gap-2"
+            >
+              <span className="w-0 h-px bg-[var(--color-brand-violet-light)] transition-all duration-300 group-hover:w-3" />
+              {link.label}
+            </a>
+          )}
         </li>
       ))}
     </ul>
