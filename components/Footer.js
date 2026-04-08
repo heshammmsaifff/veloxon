@@ -15,7 +15,7 @@ import { HiArrowUpRight } from "react-icons/hi2";
 const PHONE = "+201500866654";
 const WHATSAPP_LINK = `https://wa.me/${PHONE.replace("+", "")}`;
 const PHONE_LINK = `tel:${PHONE}`;
-const FORMATTED_PHONE = "+20 150 086 6654";
+const FORMATTED_PHONE = "+201500866654";
 
 const Footer = () => {
   const { lang } = useLang();
